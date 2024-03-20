@@ -1,0 +1,27 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>assets/colab.png</file>
+    <file>assets/docs.png</file>
+    <file>assets/refresh.png</file>
+    <file>assets/Road2.png</file>
+    <file>assets/issue.png</file>
+    <file>assets/normalize.png</file>
+    <file>assets/apps.png</file>
+    <file>assets/info.png</file>
+    <file>assets/github.png</file>
+    <file>assets/resize2.png</file>
+    <file>assets/resize.png</file>
+    <file>assets/road.png</file>
+    <file>assets/archive.png</file>
+    <file>assets/eye.png</file>
+    <file>assets/file.png</file>
+    <file>assets/folder.png</file>
+    <file>assets/maximize.png</file>
+    <file>assets/minimize.png</file>
+    <file>assets/more_dots.png</file>
+    <file>assets/settings.png</file>
+    <file>assets/slides.png</file>
+    <file>assets/trash.png</file>
+    <file>assets/x.png</file>
+  </qresource>
+</RCC>
