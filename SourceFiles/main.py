@@ -13,18 +13,15 @@ from PySide6.QtWidgets import QVBoxLayout
 import json
 import threading
 
-#################################
-## IMPORT GUI
-#################################
-from UI import *
-
 
 #################################
 ## IMPORT STUFF
 #################################
+from UI import *
 from CONFIG import *
-from KML import *
+from KML_stuff import *
 from VIDEOPLAYER import *
+
 
 
 #################################
@@ -36,13 +33,17 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
-        
+
+        self.Card_Frame = QFrame()
+        self.cards_layout = QVBoxLayout()
+        self.cards_layout.setAlignment(Qt.AlignCenter)
 
 
         self.folder_path = None
         self.cfg = Config()
         self.cfg.check_config()
         self.check_folders = Folders()
+        self.kml = KML_stuff()
 
         self.folder_path = self.cfg.folder_path
         self.videoFrame_width = self.cfg.videoFrame_width
@@ -130,17 +131,12 @@ class MainWindow(QMainWindow):
         ## ARCHIVE
         #################################
 
-        #CARDS
-        self.Card_Frame = QtWidgets.QFrame()
-        cards_layout = QVBoxLayout()
-        cards_layout.setAlignment(Qt.AlignCenter)
-        self.Card_Frame.setLayout(cards_layout)
-
-        self.check_folders.created_folders(self.folder_path, cards_layout)
-
+        self.Card_Frame.setLayout(self.cards_layout)
+        self.check_folders.created_folders(self.folder_path, self.cards_layout)
         self.ui.Cards_Frame.layout().addWidget(self.Card_Frame)
-        #REFRESH BUTTON
-        self.ui.refresh_button.clicked.connect(lambda: self.check_folders.created_folders(self.folder_path, cards_layout))
+
+        self.ui.refresh_button.clicked.connect(self.refresh_archiveList)
+
 
 
         #################################
@@ -175,6 +171,14 @@ class MainWindow(QMainWindow):
         self.show()
 
 
+    def refresh_archiveList(self):
+        while self.cards_layout.count() > 0:
+            widget = self.cards_layout.takeAt(0).widget()
+            if widget is not None:
+                widget.deleteLater()
+        
+        self.check_folders.created_folders(self.folder_path, self.cards_layout)
+
     def config_select_path(self):
         self.resultsDir = QtWidgets.QFileDialog.getExistingDirectory(self, "Select Folder for save results")
         self.ui.results_dir_input.setText(self.resultsDir)
@@ -195,11 +199,18 @@ class MainWindow(QMainWindow):
         if not project_name:
             print("project name is empty")
         else:
-            folder_exist = self.check_folders.resultFolder_path_exist(self.cfg.folder_path, project_name)
+            folder_exist = self.check_folders.resultFolder_path_check(self.cfg.folder_path, project_name)
         
         #print(f"result folder: je {folder_exist}")
 
-        KML_exist = self.check_kml()
+        kml_file = self.ui.KMLPath.text()
+        if not kml_file:
+            print("kml file is empty")
+        else:
+            total_flight_distance = round(self.kml.generate_map(folder_exist, kml_file),2)
+            print(f"Celkova preletena vzdialenosť: {total_flight_distance}")
+            
+            
 
 
     def play_video(self):
@@ -217,7 +228,7 @@ class MainWindow(QMainWindow):
                 video_player.setup_window()
                 video_player.play_video()
             else:
-                self.distance = calculate_flight_distance(kml_file)
+                self.distance = self.kmlStuff.calculate_flight_distance(kml_file)
                 print("Celková preletená vzdialenosť: {:.2f} km".format(self.distance))
                 video_player = VideoPlayer(video_file, self.videoFrame_width, self.videoFrame_height)
                 video_player.setup_window()

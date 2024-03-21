@@ -2,6 +2,7 @@ import os
 import math
 import random
 import datetime
+import subprocess
 
 import shutil
 
@@ -15,6 +16,7 @@ class Folders():
         self.i = 1
 
     def created_folders(self, cesta_k_priecinku, cards_layout):
+        self.folder_list = []
         try:
             if os.path.exists(cesta_k_priecinku) and os.path.isdir(cesta_k_priecinku):
                 results = os.listdir(cesta_k_priecinku)
@@ -42,26 +44,25 @@ class Folders():
 
 
 
-    def resultFolder_path_exist(self, folder_path, project_name):
+    def resultFolder_path_check(self, folder_path, project_name):
         project_result_directory = os.path.join(folder_path, project_name)
         try:
 
             if (not os.path.isdir(project_result_directory)):
-                os.mkdir(project_result_directory) 
-                self.create_results_directories(project_result_directory)
+                os.mkdir(project_result_directory)
+                self.create_results_directories(project_result_directory) 
             else:
                 print(f"Subor: {project_result_directory} already exists!")
                 while True:
-                    print(self.i)
-                    #_version = f"__version__{self.i}"
                     project_result_directory = f"{project_result_directory}__version_({self.i})"
                     if (not os.path.isdir(project_result_directory)):
-                        os.mkdir(project_result_directory) 
-                        self.create_results_directories(project_result_directory)
+                        os.mkdir(project_result_directory)
+                        self.create_results_directories(project_result_directory) 
                         self.i = self.i + 1
                         break
         except Exception as e:
-            print(f"Error {e}")
+            print(f"Problem pri vytvárani priečinku pre výsledky{e}")
+        os.chmod(project_result_directory, 0o777)
         return project_result_directory
         
 
@@ -73,7 +74,7 @@ class Folders():
             os.mkdir(IMG_dir) 
             os.mkdir(VIDEO_dir)
         except Exception as e:
-            print(f"Error {e}")
+            print(f"Problem pri vytváraní podpriečinkov{e}")
             
     
 
