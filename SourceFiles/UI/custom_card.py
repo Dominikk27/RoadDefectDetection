@@ -14,9 +14,13 @@ from .icons import icons_rc
 class CustomCard(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.card_frame = None
+        self.card_list = []
+        self.card_frames = []
+
+        
         self.initUI()
 
-        self.card_list = []
 
 
     def initUI(self):
@@ -28,14 +32,16 @@ class CustomCard(QWidget):
         self.setStyleSheet("background-color: #8BE9FD;")
 
         # Card Frame
-        card_frame = QFrame()
-        card_frame.setStyleSheet("background-color: #8BE9FD;")
+        self.card_frame = QFrame()
+        self.card_frame.setStyleSheet("background-color: #8BE9FD;")
         card_layout = QHBoxLayout()
-        card_frame.setMaximumHeight(300)
-        card_frame.setMaximumWidth(700)
-        card_frame.setMinimumHeight(300)
-        card_frame.setMinimumWidth(670)
+        self.card_frame.setMaximumHeight(300)
+        self.card_frame.setMaximumWidth(700)
+        self.card_frame.setMinimumHeight(300)
+        self.card_frame.setMinimumWidth(670)
         card_layout.setAlignment(Qt.AlignCenter)
+
+        self.card_frames.append(self.card_frame)
 
         # Image Frame
         image_frame = QFrame()
@@ -73,20 +79,20 @@ class CustomCard(QWidget):
 
         open_folder_button = QPushButton("Open Folder")
         open_folder_button.setIcon(QIcon(":/icons/icons/folder.png"))
-        open_folder_button.setStyleSheet("background-color: #ffffff; padding: 10px;")  # Corrected
+        open_folder_button.setStyleSheet("background-color: #ffffff; padding: 10px;") 
         self.folder_path = None
         open_folder_button.clicked.connect(lambda: self.open_folder())
 
         open_analyse_button = QPushButton("Open Analyse")
         open_analyse_button.setIcon(QIcon(":/icons/icons/file.png"))
-        open_analyse_button.setStyleSheet("background-color: #ffffff; padding: 10px;")  # Corrected
+        open_analyse_button.setStyleSheet("background-color: #ffffff; padding: 10px;")  
         self.docx_path = None
         open_analyse_button.clicked.connect(lambda: self.open_analyse())
 
         delete_project_button = QPushButton("Delete Project")
         delete_project_button.setIcon(QIcon(":/icons/icons/trash.png"))
-        delete_project_button.setStyleSheet("background-color: #ffffff; padding: 10px;")  # Corrected
-        delete_project_button.clicked.connect(lambda: self.delete_project(card_frame))
+        delete_project_button.setStyleSheet("background-color: #ffffff; padding: 10px;")  
+        delete_project_button.clicked.connect(lambda: self.delete_project())
 
 
         
@@ -101,8 +107,8 @@ class CustomCard(QWidget):
         content_frame.setLayout(content_layout)
         card_layout.addWidget(image_frame)
         card_layout.addWidget(content_frame)
-        card_frame.setLayout(card_layout)
-        self.layout.addWidget(card_frame)
+        self.card_frame.setLayout(card_layout)
+        self.layout.addWidget(self.card_frame)
 
 
         self.setLayout(self.layout)
@@ -124,18 +130,27 @@ class CustomCard(QWidget):
         except Exception as e:
             print(f"Chyba pri otváraní .docx súboru: {str(e)}")
     
-    def delete_project(self, card_frame):
+    def delete_project(self):
         try:
             shutil.rmtree(self.folder_path)
-            # Get the parent layout
-            layout = card_frame.parentWidget().layout()
-            # Remove the frame from the layout
-            layout.removeWidget(card_frame)
-            # Delete the frame to release its resources
-            card_frame.deleteLater()
+            # Odstránenie karty z rozloženia
+            self.layout.removeWidget(self.card_frame)
+            # Uvoľnenie zdrojov karty
+            self.card_frame.deleteLater()
             print(f"Adresár '{self.folder_path}' bol odstránený ")
         except Exception as e:
             print(f"Chyba pri odstráneni adresáru '{self.folder_path}': {str(e)}")
+    
+
+    def remove_all_cards(self):
+        for card_frame in self.card_frames:
+            parent_widget = card_frame.parentWidget()
+            if parent_widget is not None:
+                layout = parent_widget.layout()
+                if layout is not None:
+                    layout.removeWidget(card_frame)
+                card_frame.deleteLater()
+        self.card_frames = []
 
     
     def set_project_info(self, image_path, project_name, project_date, project_folder):
