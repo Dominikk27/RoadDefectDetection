@@ -13,10 +13,6 @@ class KML_stuff():
     def __init__(self):
         self.result_path = ""
 
-    #########################################
-    ##   VÝPOČET PRELETENEJ VZDIAELNOSTI   ##
-    #########################################
-
     def calculate_flight_distance(self, kml_file):
         print(f"KML FILE IS: {kml_file}")
         # Load KML
@@ -54,25 +50,25 @@ class KML_stuff():
             [float(coord[0]) for coord in coordinates_list]
         ))
 
-        # Vyber priblíženú oblasť
+        #Take Position for background
         min_lat = min([float(coord[0]) for coord in coordinates_list])
         max_lat = max([float(coord[0]) for coord in coordinates_list])
         min_lon = min([float(coord[1]) for coord in coordinates_list])
         max_lon = max([float(coord[1]) for coord in coordinates_list])
 
-        # Konfiguruj mapu s pozadím a zobraz priblíženú oblasť
+        #Setup background
         fig = plt.figure(figsize=(25, 10))
         ax = plt.axes(projection=ccrs.PlateCarree())
         ax.set_extent([min_lon, max_lon, min_lat, max_lat])
 
-        # Pridaj background map (napr. "OpenStreetMap")
+        #Set background from OpenStreetMap
         ax.stock_img()
         ctx.add_basemap(ax, source=ctx.providers.OpenStreetMap.Mapnik)
 
-        # Zvýrazni trasu
+        #Setup Track
         gdf.plot(ax=ax, markersize=10, color='blue', label='Trasa')
 
-        # Ulož mapu
+        #Save Map as image
         plt.savefig(MAP_output, bbox_inches='tight', pad_inches=0.1, dpi = 100)
 
         #print("Celková preletená vzdialenosť: {:.2f} km".format(distance))

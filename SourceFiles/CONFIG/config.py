@@ -13,6 +13,11 @@ class Config():
         self.default_width = 1000
         self.default_height = 700
         self.custom_results_path = None
+
+
+        self.folder_path = None
+        self.Video_width = None
+        self.Video_height = None
     
 
     def create_defaultConfig(self):
@@ -32,6 +37,7 @@ class Config():
 
 
     def check_config(self):
+        print("checking config")
         if os.path.exists(self.config_file):
             #print("config už existuje")
             self.load_config()

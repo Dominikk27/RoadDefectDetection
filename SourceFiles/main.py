@@ -2,7 +2,6 @@
 ## IMPORT LIBS
 #################################
 import sys
-import os
 from PySide6.QtWidgets import *
 from PySide6.QtGui import *
 from qt_material import *
@@ -10,17 +9,15 @@ from PySide6.QtCore import QPropertyAnimation
 from PySide6 import QtCore, QtGui, QtWidgets
 from PySide6.QtWidgets import QVBoxLayout
 
-import json
-import threading
 
 
 #################################
 ## IMPORT STUFF
 #################################
 from UI import *
-from CONFIG import *
-from KML_stuff import *
-from VIDEOPLAYER import *
+from CONFIG import Config
+from VIDEOPLAYER import VideoPlayer
+from KML_stuff import KML_stuff
 
 
 
@@ -43,12 +40,12 @@ class MainWindow(QMainWindow):
         self.cfg = Config()
         self.cfg.check_config()
         self.check_folders = Folders()
-        self.kml = KML_stuff()
 
         self.folder_path = self.cfg.folder_path
-        self.videoFrame_width = self.cfg.videoFrame_width
-        self.videoFrame_height = self.cfg.videoFrame_height
-
+        #self.videoFrame_width = self.cfg.Video_width
+        #self.videoFrame_height = self.cfg.Video_height
+        self.videoFrame_width = 880
+        self.videoFrame_height = 640
 
         #################################
         ## REMOVE FRAME
@@ -132,7 +129,7 @@ class MainWindow(QMainWindow):
         #################################
 
         self.Card_Frame.setLayout(self.cards_layout)
-        self.check_folders.created_folders(self.folder_path, self.cards_layout)
+        self.check_folders.check_folders(self.folder_path, self.cards_layout)
         self.ui.Cards_Frame.layout().addWidget(self.Card_Frame)
 
         self.ui.refresh_button.clicked.connect(self.refresh_archiveList)
@@ -172,12 +169,13 @@ class MainWindow(QMainWindow):
 
 
     def refresh_archiveList(self):
+        self.cfg.check_config()
+        self.folder_path = self.cfg.folder_path
         while self.cards_layout.count() > 0:
             widget = self.cards_layout.takeAt(0).widget()
             if widget is not None:
                 widget.deleteLater()
-        
-        self.check_folders.created_folders(self.folder_path, self.cards_layout)
+        self.check_folders.check_folders(self.folder_path, self.cards_layout)
 
     def config_select_path(self):
         self.resultsDir = QtWidgets.QFileDialog.getExistingDirectory(self, "Select Folder for save results")
@@ -194,55 +192,43 @@ class MainWindow(QMainWindow):
             self.ui.KMLPath.setText(self.kml_path)
     
     def start_analyse(self):
+        self.kml = KML_stuff()
+
         #check folder
-        project_name = self.ui.ProjectName.text()
-        if not project_name:
-            print("project name is empty")
-        else:
-            folder_exist = self.check_folders.resultFolder_path_check(self.cfg.folder_path, project_name)
-        
-        #print(f"result folder: je {folder_exist}")
-
-        kml_file = self.ui.KMLPath.text()
-        if not kml_file:
-            print("kml file is empty")
-        else:
-            total_flight_distance = round(self.kml.generate_map(folder_exist, kml_file),2)
-            print(f"Celkova preletena vzdialenosť: {total_flight_distance}")
-            
-            
-
-
-    def play_video(self):
         project_name = self.ui.ProjectName.text()
         video_file = self.ui.VideoPath.text()
         kml_file = self.ui.KMLPath.text()
-        #print(f"Nazov projektu {project_name}")
-        #print(video_file)
-        #print(f"toto je kml: {kml_file}")
-        if video_file == "":
-            return
-        else:
-            if kml_file == "":
-                video_player = VideoPlayer(project_name, video_file, self.videoFrame_width, self.videoFrame_height)
-                video_player.setup_window()
-                video_player.play_video()
+
+        if project_name and video_file:
+            folder_exist = self.check_folders.resultFolder_path_check(self.cfg.folder_path, project_name)
+            if kml_file:
+                total_flight_distance = round(self.kml.generate_map(folder_exist, kml_file),2)
             else:
-                self.distance = self.kmlStuff.calculate_flight_distance(kml_file)
-                print("Celková preletená vzdialenosť: {:.2f} km".format(self.distance))
-                video_player = VideoPlayer(video_file, self.videoFrame_width, self.videoFrame_height)
-                video_player.setup_window()
-                video_player.play_video()
+                print("KML is empty")
+            #print(f"total distance:{total_flight_distance}")
+            self.play_video(video_file, folder_exist, project_name)
+        else:
+            print("Project Name or Video Path is empty")
+
         
+            
+            
+
+
+    def play_video(self, video_file, result_directory, project_name):
+        video_player = VideoPlayer(video_file, result_directory, project_name, self.videoFrame_width, self.videoFrame_height)
+        video_player.setup_window()
+        video_player.play_video()
+   
 
 
 
 
     
     #################################
-    ## VYPISANIE HIERARCHIE
+    ## HIERARCHY
     #################################
-        # Vypisanie Hierarchie (Debug)
+        # Display Hierarchy map (Debug)
         #self.print_object_hierarchy(self.ui.centralwidget)
 
     def print_object_hierarchy(self, obj, indent=0):
@@ -336,3 +322,4 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = MainWindow()
     sys.exit(app.exec())
+

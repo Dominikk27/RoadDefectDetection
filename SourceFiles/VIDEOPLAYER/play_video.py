@@ -1,22 +1,28 @@
 import cv2
 import numpy as np
 from ultralytics import YOLO
+import os
+
+import imageio
 
 from .utils import Utils
 
 class VideoPlayer():
-    def __init__(self, project_name, source, width, height):
+    def __init__(self, source, result_directory, project_name, width, height):
         self.width = width
         self.height = height
+
         self.source = source
         self.project_name = project_name
+
+        self.result_directory = result_directory
         
-        #YOLO MODEL
-        self.model = Utils()
+        #Init model
+        self.model = Utils(result_directory)
 
     def setup_window(self):
-        print(f"VIDEO: {self.source}")
-        print(f"W: {self.width} x H: {self.height}")
+        #print(f"VIDEO: {self.source}")
+        #print(f"W: {self.width} x H: {self.height}")
         self.video = cv2.VideoCapture(self.source)
         if not self.video.isOpened():
             print("Error: Video not opened")
@@ -30,6 +36,8 @@ class VideoPlayer():
             print("Chyba: Video nie je inicializované")
             return
         
+        video_frames = []
+        
         while True:
             ret, frame = self.video.read()
             if not ret:
@@ -37,10 +45,15 @@ class VideoPlayer():
 
             results = self.model.Detection(frame)
             self.model.detection_visuals(frame, results)
+            video_frames.append(frame)
 
 
             cv2.putText(frame, f"Project: {self.project_name}", (50,100), cv2.FONT_HERSHEY_PLAIN, 3, (0, 0, 255), 3)
             cv2.imshow('Road Analyse', frame)
+
+            #self.model.saveVideo(frame)
+
+
 
             key = cv2.waitKey(1)  # 1 ms
             if key == ord('q') or key == 27:
@@ -48,3 +61,14 @@ class VideoPlayer():
 
         self.video.release()
         cv2.destroyAllWindows()
+
+        saveVideoPath = os.path.join(self.result_directory, "Video")
+        saveVidePath = os.path.join(saveVideoPath, f"{self.project_name}.mp4")
+        saveVideFile = saveVidePath.replace("\\", "/")
+        try:
+            writer = imageio.get_writer(saveVideFile, format='FFMPEG')
+            for frame in video_frames:
+                writer.append_data(frame)
+            writer.close()
+        except Exception as e:
+            print("chyba")

@@ -15,10 +15,11 @@ class Folders():
         self.folder_list = []
         self.i = 1
 
-    def created_folders(self, cesta_k_priecinku, cards_layout):
+    def check_folders(self, cesta_k_priecinku, cards_layout):
         self.folder_list = []
         try:
             if os.path.exists(cesta_k_priecinku) and os.path.isdir(cesta_k_priecinku):
+                
                 results = os.listdir(cesta_k_priecinku)
 
                 for file in results:
@@ -38,7 +39,8 @@ class Folders():
                     #else:
                         #print("Karta pre súbor je už vytvorená")
             else:
-                print(f"Priecinok '{cesta_k_priecinku}' neexistuje alebo nie je platny priecinok.")
+                print(f"Priečinok s cestou:  '{cesta_k_priecinku}' neexistuje!.")
+                
         except Exception as e:
             print(f"Chyba: {str(e)}")
 
