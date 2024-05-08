@@ -1,25 +1,26 @@
 from ultralytics import YOLO
 
-import numpy
 import cv2
-import cvzone
-import math
 import os
 from datetime import datetime
 
 import imageio
+import threading
 
 from .tracking import Tracker
 
 class Utils():
-    def __init__(self, result_dir):
+    def __init__(self, result_directory):
         #init YOLO model
         #v3_rem - bad
         #Version3 - best
         #Version2 - good
-        self.model = YOLO('./VIDEOPLAYER/pretrained_models/Version3.pt')
-        self.result_dir = result_dir
+        #888 - mby
+        #nvm pretty good getragee@gmail.com drive
+        self.model = YOLO('./VIDEOPLAYER/pretrained_models/nvm.pt')
+        self.result_dir = result_directory
         self.tracker = Tracker()
+        
 
 
     def Detection(self, frame):     
@@ -50,7 +51,7 @@ class Utils():
             cv2.putText(frame, f"{class_name}: [{conf_percentage}%]", (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
             detectedObject = frame[y1:y2, x1:x2]
             self.cropImage(detectedObject, class_name)
-
+    
 
     def setColor(self, class_name):
         if class_name == "D00":
@@ -73,7 +74,7 @@ class Utils():
             now = datetime.now()
             current_time = now.strftime("%d_%m_%Y_%H_%M_%S")
             imageFile =  f"{className}_{current_time}.jpg"
-            print(f" toto je filename {imageFile}")
+            #print(f" toto je filename {imageFile}")
            
         
             croppedImage_dir = os.path.join(self.result_dir, "Images")
@@ -83,14 +84,13 @@ class Utils():
 
             try:
                 if os.path.isdir(croppedImage_dir):
-                    print(f"toto je cropped image directory: {croppedImage_dir}")
                     #print("Exist!")
                     cv2.imwrite(saveCropImage, detectedObject)
                 else:
                     print(f"Priečinok s cestou:  '{croppedImage_dir}' neexistuje!.")
                     os.makedirs(croppedImage_dir, exist_ok = True)
                     saveCropImage = os.path.join(croppedImage_dir, imageFile)
-                    print(f"toto je cropped image directory: {croppedImage_dir}")
+                    #print(f"Directory cropped: {croppedImage_dir}")
                     cv2.imwrite(saveCropImage, detectedObject)
                     #print("Detected and cropped object saved successfully")
                         
@@ -99,13 +99,6 @@ class Utils():
         else:
             print("Empty Detection!")
 
-    #def saveVideo(self, video_frames):
-    #    videoFile = "AnalyzedVideo.mp4"
-    #    saveVideoPath = os.path.join(videoDir, videoFile)
-    #    videoDir = os.path.join(self.result_dir, "Video")
-    #    saveVideoPath = saveVideoPath.replace("\\", "/")
-    #
-    #    writer = imageio.get_writer(saveVideoPath, format='FFMPEG', fps=60, codec='libx264')
-    #    for frame in video_frames:
-    #        writer.append_data(frame)
-    #    writer.close()
+
+
+        

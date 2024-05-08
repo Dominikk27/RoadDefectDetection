@@ -42,8 +42,6 @@ class MainWindow(QMainWindow):
         self.check_folders = Folders()
 
         self.folder_path = self.cfg.folder_path
-        #self.videoFrame_width = self.cfg.Video_width
-        #self.videoFrame_height = self.cfg.Video_height
         self.videoFrame_width = 880
         self.videoFrame_height = 640
 
@@ -61,11 +59,11 @@ class MainWindow(QMainWindow):
         #################################
         ## SHADOW EFFECT
         #################################
-        self.shadow = QGraphicsDropShadowEffect(self)
-        self.shadow.setBlurRadius(50)
-        self.shadow.setXOffset(0)
-        self.shadow.setYOffset(0)
-        self.shadow.setColor(QColor(0, 42, 77, 250))
+        #self.shadow = QGraphicsDropShadowEffect(self)
+        #self.shadow.setBlurRadius(50)
+        #self.shadow.setXOffset(0)
+        #self.shadow.setYOffset(0)
+        #self.shadow.setColor(QColor(0, 42, 77, 250))
         #self.ui.centralwidget.setGraphicsEffect(self.shadow)
 
         #################################
@@ -113,9 +111,9 @@ class MainWindow(QMainWindow):
         self.ui.Settings_Button.clicked.connect(lambda:
                                                self.ui.stackedWidget.setCurrentWidget(
                                                    self.ui.Settings_Widget))
-        self.ui.Info_Button.clicked.connect(lambda:
-                                               self.ui.stackedWidget.setCurrentWidget(
-                                                   self.ui.Information_Widget))
+        #self.ui.Info_Button.clicked.connect(lambda:
+        #                                       self.ui.stackedWidget.setCurrentWidget(
+        #                                           self.ui.Information_Widget))
         
 
         self.ui.Header_Frame.mouseMoveEvent = self.move_window
@@ -159,10 +157,10 @@ class MainWindow(QMainWindow):
         #################################
         ## Info
         #################################
-        self.ui.github_Button.clicked.connect(lambda: self.open_link("github"))
-        self.ui.Github_Button.clicked.connect(lambda: self.open_link("github"))
-        self.ui.colab_Button.clicked.connect(lambda: self.open_link("colab"))
-        self.ui.docs_Button.clicked.connect(lambda: self.open_link("docs"))
+        #self.ui.github_Button.clicked.connect(lambda: self.open_link("github"))
+        #self.ui.Github_Button.clicked.connect(lambda: self.open_link("github"))
+        #self.ui.colab_Button.clicked.connect(lambda: self.open_link("colab"))
+        #self.ui.docs_Button.clicked.connect(lambda: self.open_link("docs"))
 
 
         self.show()
@@ -192,7 +190,6 @@ class MainWindow(QMainWindow):
             self.ui.KMLPath.setText(self.kml_path)
     
     def start_analyse(self):
-        self.kml = KML_stuff()
 
         #check folder
         project_name = self.ui.ProjectName.text()
@@ -202,7 +199,8 @@ class MainWindow(QMainWindow):
         if project_name and video_file:
             folder_exist = self.check_folders.resultFolder_path_check(self.cfg.folder_path, project_name)
             if kml_file:
-                total_flight_distance = round(self.kml.generate_map(folder_exist, kml_file),2)
+                self.kml = KML_stuff(folder_exist)
+                self.kml.generate_map(kml_file)
             else:
                 print("KML is empty")
             #print(f"total distance:{total_flight_distance}")
@@ -277,22 +275,6 @@ class MainWindow(QMainWindow):
                 self.clickPosition = e.globalPos()
                 e.accept()
 
-
-    #########################################
-    ## FUNCTION TO Create Results Folder
-    #########################################
-    def results_folder(self):
-        print("y")
-        #results_dir_input
-
-
-
-    ############################################################
-    ## FUNCTION TO Calculate Flight distance generate map
-    ############################################################
-    def check_kml(self):
-        print("x")
-        #results_dir_input
 
     #################################
     ## SLIDE LEFT MENU

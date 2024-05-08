@@ -1,4 +1,5 @@
 import sys
+import json
 import os
 import shutil
 import subprocess
@@ -17,6 +18,9 @@ class CustomCard(QWidget):
         self.card_frame = None
         self.card_list = []
         self.card_frames = []
+        self.project_name = None
+        self.flight_distance = None
+        self.flight_location = None
 
         
         self.initUI()
@@ -62,14 +66,14 @@ class CustomCard(QWidget):
         # Content
         self.project_name_label = QLabel("Project Name")
         self.project_name_label.setStyleSheet("font: bold 22px Arial Black;")
-        self.project_date_label = QLabel("Date")
-        self.project_length_label = QLabel("Length")
-        self.project_status_label = QLabel("Status")
+        self.project_date_label = QLabel("Date: ")
+        self.project_length_label = QLabel("Length: ")
+        self.project_location_label = QLabel("Location: ")
 
         content_layout.addWidget(self.project_name_label)
         content_layout.addWidget(self.project_date_label)
         content_layout.addWidget(self.project_length_label)
-        content_layout.addWidget(self.project_status_label)
+        content_layout.addWidget(self.project_location_label)
 
         # Buttons
         buttons_frame = QFrame()
@@ -86,7 +90,7 @@ class CustomCard(QWidget):
         open_analyse_button = QPushButton("Open Analyse")
         open_analyse_button.setIcon(QIcon(":/icons/icons/file.png"))
         open_analyse_button.setStyleSheet("background-color: #ffffff; padding: 10px;")  
-        self.docx_path = None
+        self.analyse_path = None
         open_analyse_button.clicked.connect(lambda: self.open_analyse())
 
         delete_project_button = QPushButton("Delete Project")
@@ -121,15 +125,21 @@ class CustomCard(QWidget):
         print(self.folder_path)
         subprocess.Popen(f'explorer "{self.folder_path}"')
 
+
+    #################################
+    ## Open Analyse video
+    #################################
     def open_analyse(self):
-        print(self.docx_path)
-        docx_file = os.path.join(self.docx_path, "analyse.docx")
+        analysed_file = os.path.join(self.analyse_path, f"{self.project_name}.mp4")
         try:
             # Spustite externý program pre otvorenie .docx súboru
-            subprocess.Popen(["start", "winword", docx_file], shell=True)
+            subprocess.Popen(["start", "", analysed_file], shell=True)
         except Exception as e:
-            print(f"Chyba pri otváraní .docx súboru: {str(e)}")
+            print(f"Chyba pri otváraní súboru: {str(e)}")
     
+    #################################
+    ## Delete Folder
+    #################################
     def delete_project(self):
         try:
             shutil.rmtree(self.folder_path)
@@ -153,8 +163,12 @@ class CustomCard(QWidget):
         self.card_frames = []
 
     
+    #################################
+    ## Project Info
+    #################################
     def set_project_info(self, image_path, project_name, project_date, project_folder):
-            self.card_list.append(project_name)
+            self.project_name = project_name
+            self.card_list.append(self.project_name)
             # Project INFO setup
             project_image = QPixmap(image_path)
             if not project_image.isNull():
@@ -166,11 +180,25 @@ class CustomCard(QWidget):
 
             date_label = f"Date: {project_date}"
             self.project_date_label.setText(date_label)
-            #self.project_length_label.setText(project_length)
-            #self.project_status_label.setText(project_status)
+            #print(project_folder)
+
+            flight_data_path = os.path.join(project_folder, "flight_info.json")
+            try:
+                with open(flight_data_path, 'r') as file:
+                    flight_data = json.load(file)
+                    self.flight_distance = "{:.2f}".format(flight_data.get("flight_distance"))
+                    self.flight_location = flight_data.get("location")
+            except Exception as e:
+                self.flight_distance = "N/A"
+                self.flight_distance = "N/A"
+                print(f"Flight data file not found at: {flight_data_path}")
+            
+            # Set project length and location labels
+            self.project_length_label.setText(f"Flight distance: {str(self.flight_distance)} km")
+            self.project_location_label.setText(f"Location: {self.flight_location}")
             self.folder_path = project_folder
-            self.docx_path = os.path.join(self.folder_path, "Docx")
-            #print(f"Project Name: {project_name} card list: {self.card_list}")
+            self.analyse_path = os.path.join(self.folder_path, "Video")
+           
 
 # CARD UI init
 def main():

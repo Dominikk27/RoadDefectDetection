@@ -188,15 +188,15 @@ class Ui_MainWindow(object):
 
         self.gridLayout.addWidget(self.Archive_Button, 1, 0, 1, 1, Qt.AlignLeft)
 
-        self.Info_Button = QPushButton(self.Menu_Frame)
-        self.Info_Button.setObjectName(u"Info_Button")
-        self.Info_Button.setMaximumSize(QSize(42, 16777215))
-        icon6 = QIcon()
-        icon6.addFile(u":/icons/assets/info.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.Info_Button.setIcon(icon6)
-        self.Info_Button.setIconSize(QSize(42, 42))
+        #self.Info_Button = QPushButton(self.Menu_Frame)
+        #self.Info_Button.setObjectName(u"Info_Button")
+        #self.Info_Button.setMaximumSize(QSize(42, 16777215))
+        #icon6 = QIcon()
+        #icon6.addFile(u":/icons/assets/info.png", QSize(), QIcon.Normal, QIcon.Off)
+        #self.Info_Button.setIcon(icon6)
+        #self.Info_Button.setIconSize(QSize(42, 42))
 
-        self.gridLayout.addWidget(self.Info_Button, 8, 0, 1, 1, Qt.AlignLeft|Qt.AlignTop)
+        #self.gridLayout.addWidget(self.Info_Button, 8, 0, 1, 1, Qt.AlignLeft|Qt.AlignTop)
 
         self.Settings_Button = QPushButton(self.Menu_Frame)
         self.Settings_Button.setObjectName(u"Settings_Button")
@@ -435,17 +435,17 @@ class Ui_MainWindow(object):
 
         self.gridLayout_3.addWidget(self.label_6, 1, 0, 1, 1)
 
-        self.something_input = QLineEdit(self.settingsContent_frame)
-        self.something_input.setObjectName(u"something_input")
-        self.something_input.setMinimumSize(QSize(300, 0))
+        #self.something_input = QLineEdit(self.settingsContent_frame)
+        #self.something_input.setObjectName(u"something_input")
+        #self.something_input.setMinimumSize(QSize(300, 0))
 
-        self.gridLayout_3.addWidget(self.something_input, 1, 1, 1, 1)
+        #self.gridLayout_3.addWidget(self.something_input, 1, 1, 1, 1)
 
-        self.BrowseSomething = QPushButton(self.settingsContent_frame)
-        self.BrowseSomething.setObjectName(u"BrowseSomething")
-        self.BrowseSomething.setIcon(icon9)
+        #self.BrowseSomething = QPushButton(self.settingsContent_frame)
+        #self.BrowseSomething.setObjectName(u"BrowseSomething")
+        #self.BrowseSomething.setIcon(icon9)
 
-        self.gridLayout_3.addWidget(self.BrowseSomething, 1, 2, 1, 1)
+        #self.gridLayout_3.addWidget(self.BrowseSomething, 1, 2, 1, 1)
 
 
         self.verticalLayout_10.addWidget(self.settingsContent_frame, 0, Qt.AlignHCenter|Qt.AlignVCenter)
@@ -528,58 +528,58 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_14.addWidget(self.label_8, 0, Qt.AlignHCenter|Qt.AlignBottom)
 
-        self.Links_Frame = QFrame(self.frame)
-        self.Links_Frame.setObjectName(u"Links_Frame")
-        self.Links_Frame.setFrameShape(QFrame.StyledPanel)
-        self.Links_Frame.setFrameShadow(QFrame.Raised)
-        self.horizontalLayout_12 = QHBoxLayout(self.Links_Frame)
-        self.horizontalLayout_12.setObjectName(u"horizontalLayout_12")
-        self.docs_Button = QPushButton(self.Links_Frame)
-        self.docs_Button.setObjectName(u"docs_Button")
-        icon11 = QIcon()
-        icon11.addFile(u":/icons/assets/docs.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.docs_Button.setIcon(icon11)
-        self.docs_Button.setIconSize(QSize(54, 54))
+        #self.Links_Frame = QFrame(self.frame)
+        #self.Links_Frame.setObjectName(u"Links_Frame")
+        #self.Links_Frame.setFrameShape(QFrame.StyledPanel)
+        #self.Links_Frame.setFrameShadow(QFrame.Raised)
+        #self.horizontalLayout_12 = QHBoxLayout(self.Links_Frame)
+        #self.horizontalLayout_12.setObjectName(u"horizontalLayout_12")
+        #self.docs_Button = QPushButton(self.Links_Frame)
+        #self.docs_Button.setObjectName(u"docs_Button")
+        #icon11 = QIcon()
+        #icon11.addFile(u":/icons/assets/docs.png", QSize(), QIcon.Normal, QIcon.Off)
+        #self.docs_Button.setIcon(icon11)
+        #self.docs_Button.setIconSize(QSize(54, 54))
 
-        self.horizontalLayout_12.addWidget(self.docs_Button)
+        #self.horizontalLayout_12.addWidget(self.docs_Button)
 
-        self.colab_Button = QPushButton(self.Links_Frame)
-        self.colab_Button.setObjectName(u"colab_Button")
-        icon12 = QIcon()
-        icon12.addFile(u":/icons/assets/colab.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.colab_Button.setIcon(icon12)
-        self.colab_Button.setIconSize(QSize(54, 54))
+        #self.colab_Button = QPushButton(self.Links_Frame)
+        #self.colab_Button.setObjectName(u"colab_Button")
+        #icon12 = QIcon()
+        #icon12.addFile(u":/icons/assets/colab.png", QSize(), QIcon.Normal, QIcon.Off)
+        #self.colab_Button.setIcon(icon12)
+        #self.colab_Button.setIconSize(QSize(54, 54))
 
-        self.horizontalLayout_12.addWidget(self.colab_Button)
+        #self.horizontalLayout_12.addWidget(self.colab_Button)
 
-        self.github_Button = QPushButton(self.Links_Frame)
-        self.github_Button.setObjectName(u"github_Button")
-        icon13 = QIcon()
-        icon13.addFile(u":/icons/assets/github.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.github_Button.setIcon(icon13)
-        self.github_Button.setIconSize(QSize(54, 54))
+        #self.github_Button = QPushButton(self.Links_Frame)
+        #self.github_Button.setObjectName(u"github_Button")
+        #icon13 = QIcon()
+        #icon13.addFile(u":/icons/assets/github.png", QSize(), QIcon.Normal, QIcon.Off)
+        #self.github_Button.setIcon(icon13)
+        #self.github_Button.setIconSize(QSize(54, 54))
 
-        self.horizontalLayout_12.addWidget(self.github_Button)
+        #self.horizontalLayout_12.addWidget(self.github_Button)
 
 
-        self.verticalLayout_14.addWidget(self.Links_Frame)
+        #self.verticalLayout_14.addWidget(self.Links_Frame)
 
 
         self.verticalLayout_7.addWidget(self.frame)
 
-        self.frame_2 = QFrame(self.InformationsMain_Frame)
-        self.frame_2.setObjectName(u"frame_2")
-        self.frame_2.setFrameShape(QFrame.StyledPanel)
-        self.frame_2.setFrameShadow(QFrame.Raised)
-        self.verticalLayout_15 = QVBoxLayout(self.frame_2)
-        self.verticalLayout_15.setObjectName(u"verticalLayout_15")
-        self.label_9 = QLabel(self.frame_2)
-        self.label_9.setObjectName(u"label_9")
+        #self.frame_2 = QFrame(self.InformationsMain_Frame)
+        #self.frame_2.setObjectName(u"frame_2")
+        #self.frame_2.setFrameShape(QFrame.StyledPanel)
+        #self.frame_2.setFrameShadow(QFrame.Raised)
+        #self.verticalLayout_15 = QVBoxLayout(self.frame_2)
+        #self.verticalLayout_15.setObjectName(u"verticalLayout_15")
+        #self.label_9 = QLabel(self.frame_2)
+        #self.label_9.setObjectName(u"label_9")
 
-        self.verticalLayout_15.addWidget(self.label_9)
+        #self.verticalLayout_15.addWidget(self.label_9)
 
 
-        self.verticalLayout_7.addWidget(self.frame_2)
+        #self.verticalLayout_7.addWidget(self.frame_2)
 
 
         self.verticalLayout_12.addWidget(self.InformationsMain_Frame)
@@ -698,23 +698,23 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_5.addWidget(self.Footer_Left_Frame)
 
-        self.Footer_Right_Frame = QFrame(self.Footer_Frame)
-        self.Footer_Right_Frame.setObjectName(u"Footer_Right_Frame")
-        self.Footer_Right_Frame.setFrameShape(QFrame.StyledPanel)
-        self.Footer_Right_Frame.setFrameShadow(QFrame.Raised)
-        self.horizontalLayout_7 = QHBoxLayout(self.Footer_Right_Frame)
-        self.horizontalLayout_7.setSpacing(0)
-        self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
-        self.horizontalLayout_7.setContentsMargins(0, 0, 0, 0)
-        self.Github_Button = QPushButton(self.Footer_Right_Frame)
-        self.Github_Button.setObjectName(u"Github_Button")
-        self.Github_Button.setIcon(icon13)
-        self.Github_Button.setIconSize(QSize(26, 26))
+        #self.Footer_Right_Frame = QFrame(self.Footer_Frame)
+        #self.Footer_Right_Frame.setObjectName(u"Footer_Right_Frame")
+        #self.Footer_Right_Frame.setFrameShape(QFrame.StyledPanel)
+        #self.Footer_Right_Frame.setFrameShadow(QFrame.Raised)
+        #self.horizontalLayout_7 = QHBoxLayout(self.Footer_Right_Frame)
+        #self.horizontalLayout_7.setSpacing(0)
+        #self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
+        #self.horizontalLayout_7.setContentsMargins(0, 0, 0, 0)
+        #self.Github_Button = QPushButton(self.Footer_Right_Frame)
+        #self.Github_Button.setObjectName(u"Github_Button")
+        #self.Github_Button.setIcon(icon13)
+        #self.Github_Button.setIconSize(QSize(26, 26))
 
-        self.horizontalLayout_7.addWidget(self.Github_Button, 0, Qt.AlignRight|Qt.AlignVCenter)
+        #self.horizontalLayout_7.addWidget(self.Github_Button, 0, Qt.AlignRight|Qt.AlignVCenter)
 
 
-        self.horizontalLayout_5.addWidget(self.Footer_Right_Frame)
+        #self.horizontalLayout_5.addWidget(self.Footer_Right_Frame)
 
         self.size_grip = QFrame(self.Footer_Frame)
         self.size_grip.setObjectName(u"size_grip")
@@ -732,7 +732,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.stackedWidget.setCurrentIndex(2)
+        self.stackedWidget.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -748,12 +748,12 @@ class Ui_MainWindow(object):
         self.close_button.setText("")
         self.Analyse_Button.setText("")
         self.Archive_Button.setText("")
-        self.Info_Button.setText("")
+        #self.Info_Button.setText("")
         self.Settings_Button.setText("")
         self.Analyse_Label.setText(QCoreApplication.translate("MainWindow", u"Analyse", None))
         self.Archive_Label.setText(QCoreApplication.translate("MainWindow", u"Archive", None))
         self.Settings_Label.setText(QCoreApplication.translate("MainWindow", u"Settings", None))
-        self.Info_Label.setText(QCoreApplication.translate("MainWindow", u"Info", None))
+        #self.Info_Label.setText(QCoreApplication.translate("MainWindow", u"Info", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"Analyse", None))
         self.BrowseVideo_Button.setText(QCoreApplication.translate("MainWindow", u"Browse", None))
         self.BrowseKML_Button.setText(QCoreApplication.translate("MainWindow", u"Browse", None))
@@ -764,19 +764,18 @@ class Ui_MainWindow(object):
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"Settings", None))
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"Results Directory:", None))
         self.setResultsDir.setText(QCoreApplication.translate("MainWindow", u"Browse", None))
-        self.label_6.setText(QCoreApplication.translate("MainWindow", u"Something:", None))
-        self.BrowseSomething.setText(QCoreApplication.translate("MainWindow", u"Browse", None))
+        #self.BrowseSomething.setText(QCoreApplication.translate("MainWindow", u"Browse", None))
         self.restore_defaultSettings.setText(QCoreApplication.translate("MainWindow", u"Restore Default Settings", None))
         self.save_settingsButton.setText(QCoreApplication.translate("MainWindow", u"Save Settings", None))
-        self.label_7.setText(QCoreApplication.translate("MainWindow", u"Informations", None))
-        self.label_8.setText(QCoreApplication.translate("MainWindow", u"Links", None))
-        self.docs_Button.setText("")
-        self.colab_Button.setText("")
-        self.github_Button.setText("")
-        self.label_9.setText(QCoreApplication.translate("MainWindow", u"Info Text....", None))
+        #self.label_7.setText(QCoreApplication.translate("MainWindow", u"Informations", None))
+        #self.label_8.setText(QCoreApplication.translate("MainWindow", u"Links", None))
+        #self.docs_Button.setText("")
+        #self.colab_Button.setText("")
+        #self.github_Button.setText("")
+        #self.label_9.setText(QCoreApplication.translate("MainWindow", u"Info Text....", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Archive", None))
         self.refresh_button.setText("")
         self.madeBy_label.setText(QCoreApplication.translate("MainWindow", u"Dominik Bu\u010d\u00e1k", None))
-        self.Github_Button.setText("")
+        #self.Github_Button.setText("")
     # retranslateUi
 

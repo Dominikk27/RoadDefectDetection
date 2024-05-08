@@ -1,10 +1,5 @@
 import os
-import math
-import random
 import datetime
-import subprocess
-
-import shutil
 
 from .custom_card import CustomCard
 from .custom_card import *
@@ -15,17 +10,17 @@ class Folders():
         self.folder_list = []
         self.i = 1
 
-    def check_folders(self, cesta_k_priecinku, cards_layout):
+    def check_folders(self, resultPath, cards_layout):
         self.folder_list = []
         try:
-            if os.path.exists(cesta_k_priecinku) and os.path.isdir(cesta_k_priecinku):
+            if os.path.exists(resultPath) and os.path.isdir(resultPath):
                 
-                results = os.listdir(cesta_k_priecinku)
+                results = os.listdir(resultPath)
 
                 for file in results:
                     if file not in self.folder_list:
                         custom_card = CustomCard()
-                        file_path = os.path.join(cesta_k_priecinku, file)
+                        file_path = os.path.join(resultPath, file)
                         norm_path = os.path.normpath(file_path)
                         image_path = os.path.join(file_path, "map.png")
                         if not os.path.isfile(image_path):
@@ -39,7 +34,8 @@ class Folders():
                     #else:
                         #print("Karta pre súbor je už vytvorená")
             else:
-                print(f"Priečinok s cestou:  '{cesta_k_priecinku}' neexistuje!.")
+                print(f"Priečinok s cestou:  '{resultPath}' neexistuje!.")
+                os.mkdir(resultPath)
                 
         except Exception as e:
             print(f"Chyba: {str(e)}")

@@ -5,16 +5,26 @@ from haversine import haversine
 import geopandas as gpd
 import cartopy.crs as ccrs
 import contextily as ctx
-import xyzservices.providers as xyz
+
+import requests
 
 import os
+import json
 
 class KML_stuff():
-    def __init__(self):
-        self.result_path = ""
+    def __init__(self, result_path):
+        self.result_path = result_path
+        #print (result_path)
+        
 
+
+
+
+    ######################################
+    ## Calculate total flight distance
+    ######################################
     def calculate_flight_distance(self, kml_file):
-        print(f"KML FILE IS: {kml_file}")
+        #print(f"KML FILE IS: {kml_file}")
         # Load KML
         tree = ET.parse(kml_file)
         root = tree.getroot()
@@ -26,6 +36,16 @@ class KML_stuff():
         coordinates_text = line_string.find(".//{http://www.opengis.net/kml/2.2}coordinates").text
         coordinates_list = [coord.split(',')[:2] for coord in coordinates_text.strip().split('\n')]
 
+
+        #Get Longitude/Latitude 
+        latitude, longitude = float(coordinates_list[0][1]), float(coordinates_list[0][0])
+        #print("LAT:", latitude)
+        #print("LONG:", longitude)
+
+        # Získanie názvu lokality
+        location = self.get_location_name(latitude, longitude)
+        #print("Názov lokality:", locality)
+
         # Calculate total distance
         total_distance = 0.0
 
@@ -36,12 +56,36 @@ class KML_stuff():
                                 (float(coord2[1]), float(coord2[0])))
             total_distance += distance
 
+
+        self.save_flight_info(total_distance, location)
+
         # return total distance
         return coordinates_list, total_distance
+    
+    def get_location_name(self, latitude, longitude):
+        url = f"https://nominatim.openstreetmap.org/reverse.php?lat={latitude}&lon={longitude}&zoom=18&format=jsonv2"
+        response = requests.get(url)
+        print(response)
+        if response.status_code == 200:
+            data = response.json()
+            locality = "{} {} {} {}".format(
+                data.get('address', {},).get('city_district', ''),
+                data.get('address', {},).get('hamlet', ''),
+                data.get('address', {},).get('town', ''),
+                data.get('address', {},).get('postcode', '')
+            )
+            return locality
+        else:
+            return "Názov lokality sa nenašiel"
 
 
-    def generate_map(self, output_directory, kml_file): 
-        MAP_output = os.path.join(output_directory, "map.png")
+
+
+    #################################
+    ## Generate MAP
+    #################################
+    def generate_map(self, kml_file): 
+        MAP_output = os.path.join(self.result_path, "map.png")
         
         coordinates_list, distance = self.calculate_flight_distance(kml_file)
 
@@ -71,5 +115,24 @@ class KML_stuff():
         #Save Map as image
         plt.savefig(MAP_output, bbox_inches='tight', pad_inches=0.1, dpi = 100)
 
-        #print("Celková preletená vzdialenosť: {:.2f} km".format(distance))
-        return distance
+
+
+        #print("Total Flight length {:.2f} km".format(distance))
+        #return distance
+    
+
+
+
+
+    #################################
+    ## Save Flight Info
+    #################################
+    def save_flight_info(self, flight_distance, locality):
+        flight_info = {
+            "flight_distance": flight_distance,
+            "location": locality
+        }
+        json_file_path = os.path.join(self.result_path, "flight_info.json")
+        with open(json_file_path, "w") as json_file:
+            json.dump(flight_info, json_file)
+        print(f"Flight information saved to {json_file_path}")
