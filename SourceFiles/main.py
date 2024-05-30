@@ -150,17 +150,8 @@ class MainWindow(QMainWindow):
         self.resultsDir = ""
         self.ui.setResultsDir.clicked.connect(lambda: self.config_select_path())
         self.ui.save_settingsButton.clicked.connect(lambda: self.cfg.save_config(self.resultsDir))
-        self.ui.restore_defaultSettings.clicked.connect(lambda: self.cfg.restore_default())
+        self.ui.restore_defaultSettings.clicked.connect(lambda: self.restoreDefaultConfig())
         self.ui.results_dir_input.setText(self.cfg.folder_path)
-
-
-        #################################
-        ## Info
-        #################################
-        #self.ui.github_Button.clicked.connect(lambda: self.open_link("github"))
-        #self.ui.Github_Button.clicked.connect(lambda: self.open_link("github"))
-        #self.ui.colab_Button.clicked.connect(lambda: self.open_link("colab"))
-        #self.ui.docs_Button.clicked.connect(lambda: self.open_link("docs"))
 
 
         self.show()
@@ -178,6 +169,12 @@ class MainWindow(QMainWindow):
     def config_select_path(self):
         self.resultsDir = QtWidgets.QFileDialog.getExistingDirectory(self, "Select Folder for save results")
         self.ui.results_dir_input.setText(self.resultsDir)
+
+    def restoreDefaultConfig(self):
+        self.resultsDir = ''
+        self.cfg.restore_default()
+        self.ui.results_dir_input.setText("")
+        self.ui.results_dir_input.setText(self.cfg.folder_path)
        
            
 
@@ -234,18 +231,6 @@ class MainWindow(QMainWindow):
         for child in obj.children():
             if child is not None:
                 self.print_object_hierarchy(child, indent + 4)
-
-
-
-    def open_link(self, link_type):
-        if link_type == "github":
-            QDesktopServices.openUrl("https://github.com/Dominikk27")
-        elif link_type == "colab":
-            QDesktopServices.openUrl("https://colab.research.google.com/drive/1SX7YN-mBcEuoC__TfYaM6bC-gBM6tUv5")
-        elif link_type == "docs":
-            QDesktopServices.openUrl("https://github.com/Dominikk27")
-        else:
-            print("ERROR")
 
     
     #################################

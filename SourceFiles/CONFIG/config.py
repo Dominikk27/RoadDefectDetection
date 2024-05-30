@@ -52,7 +52,10 @@ class Config():
 
 
     def save_config(self, custom_results_path):
-        self.custom_results_path = custom_results_path
+        if custom_results_path == '':
+            self.custom_results_path = self.default_results_path
+        else: 
+            self.custom_results_path = custom_results_path
         try:
             data = {
                 "Results_Directory": self.custom_results_path
@@ -63,6 +66,9 @@ class Config():
             print(f"Error: {e}")
     
     def restore_default(self):
+        self.default_config = {
+            "Results_Directory": self.default_results_path,
+        }
         try: 
             with open(self.config_file, "w") as config_json:
                 json.dump(self.default_config, config_json, indent = 4)

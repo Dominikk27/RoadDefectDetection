@@ -17,7 +17,7 @@ class Utils():
         #Version2 - good
         #888 - mby
         #nvm pretty good getragee@gmail.com drive
-        self.model = YOLO('./VIDEOPLAYER/pretrained_models/nvm.pt')
+        self.model = YOLO('./VIDEOPLAYER/pretrained_models/Version3.pt')
         self.result_dir = result_directory
         self.tracker = Tracker()
         
